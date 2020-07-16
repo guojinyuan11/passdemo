@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 郑重提示:标识注释+星号的需要修改的   只有注释的是需要了解继承哪个父类的 -->
+    <context id="default" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <!-- 这个不用改，正常的插件 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <plugin type="cc.datav.core.generator.plugin.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="cc.datav.core.generator.plugin.MapperPlugin">
+            <!-- 这个是你的dao接口就是mapper.java文件需要在哪个项目下面进行生成的（指定生成的接口放置的项目位置） -->
+            <property name="targetProject" value="../larkCommu-SYS-Service/src/main/java"/>
+            <!-- **改变这个dao层的包也就是你的mapper接口在哪一个包下面** （指定dao层在项目的那个包中）-->
+            <property name="targetPackage" value="cc.datav.dao.access"/>
+        </plugin>
+        <!-- 我也不知道怎么回事不用改就是一个插件 -->
+        <commentGenerator type="cc.datav.core.generator.plugin.CommentGenerator">
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- <commentGenerator>
+            <property name="suppressDate" value="true" />
+        </commentGenerator> -->
+        <!-- ***你要生成的表在哪个数据库里面这个要改了四大参数*** （这个根据自己的数据库进行更改（用于连接））-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/prolicydecision?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
+                        userId="root" password="wenpaizhang">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- ***这个就是逆向工程生成的实体应该对应在哪个项目的哪个包下面都是要改的***（这个需要再看一下如何弄的） -->
+        <javaModelGenerator targetPackage="cc.datav.model.access" targetProject="../larkCommu-SYS-API/src/main/java">
+            <property name="constructorBased" value="false"/>
+            <property name="useActualColumnNames" value="true" />
+            <property name="enableSubPackages" value="false"/>
+            <property name="immutable" value="false"/>
+            <property name="trimStrings" value="true"/>
+            <!-- 指定你的类要默认继承的是哪个包也就是父类是哪个？（指定类要继承的父类） -->
+            <property name="rootClass" value="cc.datav.core.base.BaseModel"/>
+        </javaModelGenerator>
+        <!-- ****这个是上面你指定了mapper.java接口，这个就是指定mapper.xml的配置文件了**** （指定xml配置文件生成的位置）-->
+        <sqlMapGenerator targetPackage="mappers.generator.access" targetProject="../larkCommu-SYS-Service/src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <!-- ***指定mapper.java这个接口需要继承一下父接口直接就生成了*** -->
+        <javaClientGenerator targetPackage="cc.datav.dao.access" targetProject="../larkCommu-SYS-Service/src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value=""/>
+            <property name="methodNameCalculator" value=""/>
+            <!-- 指定你的mapper.java需要继承哪个父类 -->
+            <property name="rootInterface" value="cc.datav.core.base.BaseMapper"/>
+        </javaClientGenerator>
+        <!-- ***指定表名一个表对应一个mapper接口mapper.xml跟一个实体，其他的需要自己按照老员工以前的自己创建 （指定要使用的表的位置）***-->
+        <table tableName="access_issuance_option"/>
+
+    </context>
+</generatorConfiguration>
